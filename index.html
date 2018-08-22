@@ -1,0 +1,200 @@
+<html>
+    <head>
+        <meta charset="utf8">
+        <title>線上繪圖</title>
+        <script src="jquery-3.3.1.min.js"></script>
+        <style>
+            *{
+                font-family: 微軟正黑體;
+            }
+            .page{
+                width:1500px;
+                height:900px;
+                border:1px #000 solid;
+            }
+            .left{
+                float:left;
+                height:900PX;
+                width:1199px;
+            }
+            .right{
+                text-align:left;
+                float:right;
+                height:100%;
+                width:300px;
+                border-left: 1px #000 solid;
+            }
+            .title{
+                font-weight: bolder;
+                font-size:26px;
+                color:#369;
+            }
+        </style>
+    </head>
+    <body>
+        <center>
+            <div class="page">
+                <div class="left">
+                    <canvas id="image" width="1199" height="900">
+                    </canvas>
+                </div>
+                <div class="right">
+                    <div style="margin:5px">
+                        <div class="title">
+                            網頁小畫家
+                        </div>
+                        <HR>
+                        <div class="title">
+                            功能
+                        </div>
+                        <input id="del" type="button" value="清除">
+                        <hr>
+                        <div class="title">
+                            調色盤
+                        </div>
+                        紅色 <span id="color"><input id="r" type="range" name="points" min="0" max="255" value="0"></span> <span id="value"><input id="vr" type="text" value="0" style="width:30px"></span><br>
+                        綠色 <span id="color"><input id="g" type="range" name="points" min="0" max="255" value="0"></span> <span id="value"><input id="vg" type="text" value="0" style="width:30px"></span><br>
+                        藍色 <span id="color"><input id="b" type="range" name="points" min="0" max="255" value="0"></span> <span id="value"><input id="vb" type="text" value="0" style="width:30px"></span><br>
+                        細<input id="width" type="range" name="points" min="1" max="10" value="1">粗 <p><div id="swidth" style="width:100px;height:1px;background:#000;"></div> <hr>
+                        <div class="title">
+                            圖形 <div id="show"></div>
+                        </div>
+                        <div id="grap">
+                        <image id="square" src="square.png" width="50" height="50">
+                        <image id="round" src="round.png" width="50" height="50">
+                        <image id="star" src="star.png" width="50" height="50">    
+                        </div>
+                        <hr>
+                        <div class="title">
+                            上傳
+                        </div>
+                        <input id="img-file" type="file" accept="image/*"><p> <input id="img-upload" type="button" value="確定">
+                        <hr>
+                        <div class="title">
+                            下載
+                        </div>
+                        <input type="button" value="取得下載連結" id="img-download"> <div id="download-icon"></div>
+                    </div>
+                </div>
+            </div>
+            
+        </center>
+        <script>
+            $(function(){
+                var image = document.getElementById('image'); //將canvas id存入image變數
+                var image2 = $('#image');
+                var cc = image.getContext("2d"); //設定空間
+                var img = new Image();
+                var fr = new FileReader();
+                //設定背景為白色
+                cc.fillStyle = "#fff";
+                cc.fillRect(0,0,1199,900);
+                cc.stroke();
+
+                //清除時將canvas塗上背景顏色
+                $('#del').click(function(){
+                    cc.fillStyle = "#fff";
+                    cc.fillRect(0,0,1199,900);
+                    cc.stroke();
+                });
+
+                //當桿槓被改變時
+                $('#color input').change(function(){ //id為color 中的input  被change(改變)時
+                    //取得桿槓的值 並存入變數
+                    r = $('#r').val();
+                    g = $('#g').val();
+                    b = $('#b').val();
+                    changeColor(r,g,b); //觸發function
+                });
+
+                //function changrColor
+                function changeColor(r,g,b){
+                    //將顏色存入陣列
+                    colors = {
+                        r : r,
+                        g : g,
+                        b : b
+                    }
+                    //loop陣列
+                    $.each(colors, function(color, value) {
+                        //更改 text 中的值
+                        $('#v' + color).val(value);
+                    });
+                    //改變canvas線段顏色
+                    cc.strokeStyle = "rgb("+r+","+g+","+b+")";
+                    $('#color2').css("background","rgb("+r+","+g+","+b+")");
+                    $('#swidth').css("background","rgb("+r+","+g+","+b+")");
+                };
+
+                //改變線寬
+                $('#width').change(function(){
+                    width = $('#width').val();
+                    cc.lineWidth = width;
+                    $('#swidth').css("height",width);
+                })
+
+                //滑鼠按下時
+                var drawMode = false;
+                var status = true;
+                $('#image').mousedown(function(e) {
+                    if(status){
+                    cc.beginPath();
+                    cc.moveTo(e.pageX - image2.position().left, e.pageY - image2.position().top);
+                    drawMode = true;
+                    }else{
+                        cc.drawImage(K, e.pageX - image2.position().left, e.pageY - image2.position().top);
+                        status = true;
+                    }
+                })
+
+                //滑鼠移動時
+                .mousemove(function(e){
+                    if(drawMode){
+                        cc.lineTo(e.pageX - image2.position().left, e.pageY - image2.position().top);
+                        cc.stroke();
+                    }
+                })
+
+                //滑鼠離開時
+                .mouseup(function(e){
+                    drawMode = false;
+                })
+
+                //匯入圖片
+                $('#img-upload').click(function(e){
+                    if($('#img-file').val() == ""){
+                        alert('請選擇檔案!');
+                    }else{
+                        var file = $('#img-file')[0].files[0];
+                        fr.readAsDataURL(file);
+                        localStorage.filename = file.name
+                        localStorage.mimeType = file.type
+
+                        fr.onload = function(){
+                            img.src = this.result;
+                        }
+                        img.onload = function(){
+                            cc.drawImage(this, 10, 10);
+                        }
+                        //$('#img-file').val('');
+                    }
+                })
+
+                //下載圖片
+                $('#img-download').click(function(e){
+                    var imgUrl = image.toDataURL(localStorage.mimeType);
+                    $('#download-icon').html(
+                        "<a href='" + imgUrl +"' download='"+localStorage.filename+"'>下載連結</a>"
+                    )
+                })
+                
+                $('#grap img').click(function(e){
+                    N = $(this).attr("id");
+                    K = document.getElementById(N);
+                    status = false;
+                })
+            })
+        </script>
+    </body>
+</html>
+ 
