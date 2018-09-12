@@ -1,39 +1,123 @@
 *{
-    font-family: 微軟正黑體;
+    font-family: "Arial", "微軟正黑體";
 }
 
 body{
     margin: 0px;
     padding: 0px;
+    background: rgb(156, 194, 231);
+}
+
+.button1{
     width: 100%;
-    height: 100vh;
-    align-items: center;
-    justify-content: center;
-    display: flex;
+    cursor: pointer;
 }
 
-.page{
-    width:1500px;
-    height:900px;
-    border:1px #000 solid;
+#tools{
+    width: 100%;
+    height: 80px;
+    padding:2px 0 2px 0;
+    background: #eee;
+    border-bottom: 1px #ddd solid;
+    position: fixed;
 }
 
-.left{
-    float:left;
-    height:900PX;
-    width:1199px;
+#area{
+    height: 100%;
+    font-size: 14px;
+    padding: 0 5px 0 5px;
+    border-right: 1px #ccc solid;
+    float: left;
 }
 
-.right{
-    text-align:left;
-    float:right;
-    height:100%;
-    width:300px;
-    border-left: 1px #000 solid;
+#area #title{
+    text-align: center;
 }
 
-.title{
-    font-weight: bolder;
-    font-size:26px;
-    color:#369;
+#area #context{
+    text-align: center;
+    margin: 5px 0 0 0;
+}
+
+.function{
+    width: 100px;
+}
+
+#color{
+    width: 15px;
+    height: 15px;
+    padding: 1px;
+    border: 1px #888 solid;
+    cursor: pointer;
+}
+
+#color:hover{
+    border: 1px #58b solid;
+}
+
+#color div{
+    width: 100%;
+    height: 100%;
+}
+
+.black{
+    background: #000;
+}
+
+.gray{
+    background: gray;
+}
+
+.red{
+    background: red;
+}
+
+.orange{
+    background: orange;
+}
+
+.green{
+    background: green;
+}
+
+.bule{
+    background: blue;
+}
+
+#widthtype{
+    padding:5px 0 5px 0;
+    border:1px gray solid;
+    cursor: pointer;
+}
+
+#widthtype:hover{
+    border:1px #369 solid;
+}
+
+.width1px{
+    width: 100px;
+    height: 1px;
+    margin:0 5px 0 5px;
+    background: #000 ;
+}
+
+.width2px{
+    width: 100px;
+    height: 2px;
+    margin:0 5px 0 5px;
+    background: #000 ;
+}
+
+.width3px{
+    width: 100px;
+    height: 3px;
+    margin:0 5px 0 5px;
+    background: #000 ;
+}
+
+canvas{
+    position: relative;
+    top: 85px;
+    margin: 5px;
+    border:1px #888 solid;
 }
