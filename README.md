@@ -2,7 +2,7 @@
 ## Version Log
 Version 2.0
 + 修改版型
-+ 重新設計JavaScript
++ 重新設計系統
 
 Version 1.2
 + 修改為符合HTML5規範
